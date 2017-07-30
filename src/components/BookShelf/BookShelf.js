@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../BooksAPI';
 import '../../App.css';
 import Book from '../Book/Book';
@@ -130,7 +131,7 @@ class BookShelf extends React.Component {
             </div>
           </div>
           <div className="open-search">
-            <a>Add a book</a>
+            <Link to="/search">Add a book></Link>
           </div>
         </div>
       </div>
