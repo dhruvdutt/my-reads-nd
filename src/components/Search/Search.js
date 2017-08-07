@@ -74,11 +74,13 @@ class Search extends Component {
       return (<h1>No results</h1>)
     }
 
+    console.log("Search results: ", this.state.books);
+
     let books = this.state.books.map(book => {
       return (
-        <h1 key={book.id}>
-          <p>{ book.name }</p>
-        </h1>
+        <div key={book.id}>
+          <Book book={book} moveBook={this.moveBook} />
+        </div>
       );
     });
 
