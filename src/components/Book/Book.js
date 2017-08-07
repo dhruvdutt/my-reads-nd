@@ -4,9 +4,9 @@ import './Book.css';
 const Book = (props) => (
   <div className="book">
     <div className="book-top">
-      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(props.imageLinks.smallThumbnail)' }}></div>
+      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${props.book.imageLinks && props.book.imageLinks.smallThumbnail})` }}></div>
       <div className="book-shelf-changer">
-        <select onChange={(event) => props.moveBook(event, props.book)}>
+        <select value={props.book.shelf} onChange={(event) => props.moveBook(event, props.book)}>
           <option value="none" disabled>Move to...</option>
           <option value="currentlyReading" disabled={props.type === 'currentlyReading'}>Currently Reading</option>
           <option value="wantToRead" disabled={props.type === 'wantToRead'}>Want to Read</option>
