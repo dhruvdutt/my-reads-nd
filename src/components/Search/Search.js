@@ -55,6 +55,7 @@ class Search extends Component {
 
     BooksAPI.update(book, value)
       .then(response => {
+        console.log("Book Added", response);
         this.setState({
           bookAdded: true
         });
@@ -79,7 +80,10 @@ class Search extends Component {
     let books = this.state.books.map(book => {
       return (
         <div key={book.id}>
-          <Book book={book} moveBook={this.moveBook} />
+          <Book
+            book={book}
+            type={"none"}
+            moveBook={this.moveBook} />
         </div>
       );
     });

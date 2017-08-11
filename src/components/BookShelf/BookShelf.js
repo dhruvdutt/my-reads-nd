@@ -36,9 +36,6 @@ class BookShelf extends React.Component {
 
     let { value } = event.target;
 
-    console.log('MOOMOVMOVE', book);
-    console.log('MOOMOVMOVE', event);
-
     BooksAPI.update(book, value)
       .then(response => {
         this.setState({
