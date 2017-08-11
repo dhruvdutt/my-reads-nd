@@ -4,7 +4,7 @@ import './Book.css';
 const Book = (props) => (
   <div className="book">
     <div className="book-top">
-      <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${props.book.imageLinks && props.book.imageLinks.smallThumbnail})` }}></div>
+      <div className="book-cover book-img" style={{backgroundImage: `url(${props.book.imageLinks && props.book.imageLinks.smallThumbnail})`}}/>
       <div className="book-shelf-changer">
         <select value={props.book.shelf} onChange={(event) => props.moveBook(event, props.book)}>
           <option value="none" disabled>Move to...</option>

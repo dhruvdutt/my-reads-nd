@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../BooksAPI';
 import '../../App.css';
 import Book from '../Book/Book';
+import keyIndex from 'react-key-index';
 
 class BookShelf extends React.Component {
 
@@ -16,6 +17,7 @@ class BookShelf extends React.Component {
 
     this.moveBook = this.moveBook.bind(this);
     this.filterBooks = this.filterBooks.bind(this);
+    this.renderShelf = this.renderShelf.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +77,41 @@ class BookShelf extends React.Component {
     return null;
   }
 
+  renderShelf() {
+
+    let { books } = this.state;
+
+    let bookStatus = keyIndex([
+      {
+        "status": "currentlyReading",
+        "label": "Currently Reading"
+      },
+      {
+        "status": "wantToRead",
+        "label": "Want to Read"
+      },
+      {
+        "status": "read",
+        "label": "Read"
+      }
+    ], 1);
+
+    return bookStatus.map(item => {
+      return (
+        <div className="bookshelf" key={item._statusId}>
+          <h2 className="bookshelf-title">{ item.label }</h2>
+          <div className="bookshelf-books">
+            <ol className="books-grid">
+              {books.map(book => {
+                return this.filterBooks(book, item.status, this.moveBook)
+              })}
+            </ol>
+          </div>
+        </div>
+      )
+    })
+  }
+
   render() {
 
     if (this.state.loading) {
@@ -85,8 +122,6 @@ class BookShelf extends React.Component {
       )
     }
 
-    let books = this.state.books;
-
     return (
       <div className="app">
         <div className="list-books">
@@ -95,36 +130,7 @@ class BookShelf extends React.Component {
           </div>
           <div className="list-books-content">
             <div>
-              <div className="bookshelf">
-                <h2 className="bookshelf-title">Currently Reading</h2>
-                <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    {books.map(book => {
-                      return this.filterBooks(book, 'currentlyReading', this.moveBook)
-                    })}
-                  </ol>
-                </div>
-              </div>
-              <div className="bookshelf">
-                <h2 className="bookshelf-title">Want to Read</h2>
-                <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    {books.map(book => {
-                      return this.filterBooks(book, 'wantToRead', this.moveBook)
-                    })}
-                  </ol>
-                </div>
-              </div>
-              <div className="bookshelf">
-                <h2 className="bookshelf-title">Read</h2>
-                <div className="bookshelf-books">
-                  <ol className="books-grid">
-                    {books.map(book => {
-                      return this.filterBooks(book, 'read', this.moveBook)
-                    })}
-                  </ol>
-                </div>
-              </div>
+              {this.renderShelf()}
             </div>
           </div>
           <div className="open-search">

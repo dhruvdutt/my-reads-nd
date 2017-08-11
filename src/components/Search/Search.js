@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../App.css';
 import Book from '../Book/Book';
 import * as BooksAPI from '../../BooksAPI';
+import keyIndex from 'react-key-index';
 
 class Search extends Component {
   constructor(props) {
@@ -30,11 +31,15 @@ class Search extends Component {
       });
 
       BooksAPI.search(value, 10)
-        .then(response => {
+        .then(books => {
           this.setState({
-            loading: false,
-            books: response
+            loading: false
           });
+
+          if (this.state.books !== books) {
+            this.setState({books})
+          }
+
         })
         .catch(err => {
           console.log(err);
@@ -55,7 +60,7 @@ class Search extends Component {
 
     BooksAPI.update(book, value)
       .then(response => {
-        console.log("Book Added", response);
+        console.info("Book Added");
         this.setState({
           bookAdded: true
         });
@@ -75,20 +80,20 @@ class Search extends Component {
       return (<h1>No results</h1>)
     }
 
-    console.log("Search results: ", this.state.books);
+    let books = keyIndex(this.state.books, 1);
 
-    let books = this.state.books.map(book => {
+    //console.log("Results:", books);
+
+    return books.map(book => {
       return (
-        <div key={book.id}>
+        <li key={book._idId}>
           <Book
             book={book}
             type={"none"}
-            moveBook={this.moveBook} />
-        </div>
+            moveBook={this.moveBook}/>
+        </li>
       );
     });
-
-    return books;
   }
 
   render() {
