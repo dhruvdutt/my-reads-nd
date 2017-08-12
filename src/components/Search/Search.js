@@ -24,7 +24,7 @@ class Search extends Component {
   onSearch({ target }) {
 
     let { value } = target;
-    if (value && value.length > 3) {
+    if (value && value.length > 1) {
 
       this.setState({
         loading: true
@@ -37,7 +37,7 @@ class Search extends Component {
           });
 
           if (this.state.books !== books) {
-            this.setState({books})
+            this.setState({ books })
           }
 
         })
@@ -86,8 +86,9 @@ class Search extends Component {
 
     return books.map(book => {
       return (
-        <li key={book._idId}>
+        <li>
           <Book
+            key={book._idId}
             book={book}
             type={"none"}
             moveBook={this.moveBook}/>
