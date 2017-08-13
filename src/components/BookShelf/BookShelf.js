@@ -27,7 +27,7 @@ class BookShelf extends React.Component {
           books: response,
           loading: false
         });
-        console.log('BooksAPI.getAll', response);
+        // console.log('BooksAPI.getAll', response);
       })
       .catch(err => {
         console.error('ERROR: BooksAPI.getAll', err);

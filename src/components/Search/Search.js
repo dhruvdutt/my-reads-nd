@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import * as _ from 'lodash';
 import '../../App.css';
 import Book from '../Book/Book';
 import * as BooksAPI from '../../BooksAPI';
@@ -16,10 +17,24 @@ class Search extends Component {
 
   state = {
     query: '',
-    loading: false,
+    loading: true,
     bookAdded: false,
-    books: []
+    books: [],
+    allBooks: []
   };
+
+  componentDidMount() {
+
+    BooksAPI.getAll()
+      .then(allBooks => {
+        allBooks = _.keyBy(allBooks, 'id');
+        this.setState({ allBooks, loading: false });
+        // console.log('BooksAPI.getAll', allBooks);
+      })
+      .catch(err => {
+        console.error('ERROR: BooksAPI.getAll', err);
+      });
+  }
 
   onSearch({ target }) {
 
@@ -37,6 +52,19 @@ class Search extends Component {
           });
 
           if (this.state.books !== books) {
+            let { allBooks } = this.state;
+
+            books = books.map(book => {
+              if (allBooks.hasOwnProperty(book.id)) {
+                book['shelf'] = allBooks[book.id].shelf;
+              } else {
+                book['shelf'] = "none";
+              }
+              return book;
+            })
+
+            // console.log("Books: ", books);
+
             this.setState({ books })
           }
 
@@ -77,7 +105,7 @@ class Search extends Component {
     }
 
     if (this.state.books && !this.state.books.length) {
-      return (<h1>No results</h1>)
+      return (<h1>Search for a book</h1>)
     }
 
     let books = keyIndex(this.state.books, 1);
@@ -86,11 +114,11 @@ class Search extends Component {
 
     return books.map(book => {
       return (
-        <li>
+        <li key={book.id}>
           <Book
             key={book._idId}
             book={book}
-            type={"none"}
+            type={book.shelf}
             moveBook={this.moveBook}/>
         </li>
       );
